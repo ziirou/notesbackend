@@ -39,7 +39,7 @@ app.get('/api/notes/:id', (request, response, next) => {
 })
 
 const setImportance = (important) => {
-  if (typeof important != 'boolean') {
+  if (typeof important !== 'boolean') {
     if (important === 'false') {
       return false
     }
