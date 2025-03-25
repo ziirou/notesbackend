@@ -6,6 +6,7 @@
     "start": "node index.js",
     "dev": "node --watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
     "build:ui": "@powershell -Command \"if (Test-Path dist) { Remove-Item -Recurse -Force dist }\" && cd ../../part2 && npm run build && @powershell Copy-Item -Recurse dist ../part3/notesbackend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
@@ -16,5 +17,11 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mongoose": "^8.12.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.23.0",
+    "@stylistic/eslint-plugin-js": "^4.2.0",
+    "eslint": "^9.23.0",
+    "globals": "^16.0.0"
   }
 }
