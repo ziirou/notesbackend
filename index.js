@@ -40,7 +40,7 @@ app.get('/api/notes/:id', (request, response, next) => {
 
 const setImportance = (important) => {
   if (typeof important != 'boolean') {
-    if (important === "false") {
+    if (important === 'false') {
       return false
     }
 
@@ -84,9 +84,9 @@ app.put('/api/notes/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.delete('/api/notes/:id', (request, response) => {
+app.delete('/api/notes/:id', (request, response, next) => {
   Note.findByIdAndDelete(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))

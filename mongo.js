@@ -21,7 +21,7 @@ if (process.argv.length > 3) {
   })
 
   note.save()
-    .then(result => {
+    .then(() => {
       console.log(`added '${note.content}' to notes`)
       mongoose.connection.close()
     })
