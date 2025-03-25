@@ -25,7 +25,7 @@ if (process.argv.length > 3) {
       console.log(`added '${note.content}' to notes`)
       mongoose.connection.close()
     })
-    .catch(error => 
+    .catch(error =>
       console.log(`Error: ${error}`)
     )
 } else {
