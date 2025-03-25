@@ -19,12 +19,24 @@ notesRouter.get('/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
+const setImportance = (important) => {
+  if (typeof important !== 'boolean') {
+    if (important === 'false') {
+      return false
+    }
+
+    return true
+  }
+
+  return important
+}
+
 notesRouter.post('/', (request, response, next) => {
   const body = request.body
 
   const note = new Note({
     content: body.content,
-    important: body.important || false,
+    important: setImportance(body.important),
   })
 
   note.save()
@@ -52,7 +64,7 @@ notesRouter.put('/:id', (request, response, next) => {
       }
 
       note.content = content
-      note.important = important
+      note.important = setImportance(important)
 
       return note.save().then((updatedNote) => {
         response.json(updatedNote)
