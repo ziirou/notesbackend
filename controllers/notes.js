@@ -30,7 +30,7 @@ const setImportance = (important) => {
   return important
 }
 
-notesRouter.post('/', (request, response, next) => {
+notesRouter.post('/', async (request, response) => {
   const body = request.body
 
   const note = new Note({
@@ -38,11 +38,8 @@ notesRouter.post('/', (request, response, next) => {
     important: setImportance(body.important),
   })
 
-  note.save()
-    .then(savedNote => {
-      response.json(savedNote)
-    })
-    .catch(error => next(error))
+  const savedNote = await note.save()
+  response.status(201).json(savedNote)
 })
 
 notesRouter.delete('/:id', (request, response, next) => {
