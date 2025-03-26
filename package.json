@@ -8,6 +8,7 @@
     "build:ui": "@powershell -Command \"if (Test-Path dist) { Remove-Item -Recurse -Force dist }\" && cd ../../part2 && npm run build && @powershell Copy-Item -Recurse dist ../part3/notesbackend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "node --test"
   },
   "author": "Tero Nikula",
