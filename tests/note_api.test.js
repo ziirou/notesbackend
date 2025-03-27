@@ -87,6 +87,45 @@ describe('note_api', () => {
     assert.deepStrictEqual(resultNote.body, noteToView)
   })
 
+  test('a specific note can be edited', async () => {
+    const notesAtStart = await helper.notesInDb()
+
+    let noteToEdit = notesAtStart[0]
+    noteToEdit = {
+      content: 'edited note by test',
+      important: false,
+      id: notesAtStart[0].id
+    }
+
+    const resultNote = await api
+      .put(`/api/notes/${noteToEdit.id}`)
+      .send(noteToEdit)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    assert.deepStrictEqual(resultNote.body, noteToEdit)
+  })
+
+  test('note without content is not edited', async () => {
+    const notesAtStart = await helper.notesInDb()
+
+    let noteToEdit = notesAtStart[0]
+    noteToEdit = {
+      important: false,
+      id: notesAtStart[0].id
+    }
+
+    const response = await api
+      .put(`/api/notes/${noteToEdit.id}`)
+      .send(noteToEdit)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    assert.notDeepStrictEqual(response.body, notesAtStart[0])
+
+    assert('error' in response.body)
+  })
+
   test('a note can be deleted', async () => {
     const notesAtStart = await helper.notesInDb()
     const noteToDelete = notesAtStart[0]
