@@ -9,12 +9,7 @@ const Note = require('../models/note')
 
 beforeEach(async () => {
   await Note.deleteMany({})
-
-  let noteObject = new Note(helper.initialNotes[0])
-  await noteObject.save()
-
-  noteObject = new Note(helper.initialNotes[1])
-  await noteObject.save()
+  await Note.insertMany(helper.initialNotes)
 })
 
 describe('note_api', () => {
