@@ -50,7 +50,7 @@ describe('when there is initially some notes saved', () => {
       assert.deepStrictEqual(resultNote.body, noteToView)
     })
 
-    test('fails with statuscode 404 if note does not exist', async () => {
+    test('fails with status code 404 if note does not exist', async () => {
       const validNonexistingId = await helper.nonExistingId()
 
       await api
@@ -58,7 +58,7 @@ describe('when there is initially some notes saved', () => {
         .expect(404)
     })
 
-    test('fails with statuscode 400 if id is invalid', async () => {
+    test('fails with status code 400 if id is invalid', async () => {
       const invalidId = '5a3d5da59070081a82a3445'
 
       await api
@@ -107,23 +107,24 @@ describe('when there is initially some notes saved', () => {
     test('succeeds with valid data', async () => {
       const notesAtStart = await helper.notesInDb()
 
-      let noteToEdit = notesAtStart[0]
-      noteToEdit = {
+      const idNoteToEdit = notesAtStart[0].id
+      const editedNote = {
         content: 'edited note by test',
-        important: false,
-        id: notesAtStart[0].id
+        important: false
       }
 
-      const resultNote = await api
-        .put(`/api/notes/${noteToEdit.id}`)
-        .send(noteToEdit)
+      const response = await api
+        .put(`/api/notes/${idNoteToEdit}`)
+        .send(editedNote)
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
-      assert.deepStrictEqual(resultNote.body, noteToEdit)
+      const updatedNoteWithoutId = { ...response.body }
+      delete updatedNoteWithoutId.id
+      assert.deepStrictEqual(updatedNoteWithoutId, editedNote)
     })
 
-    test('fails with statuscode 400 if id is invalid', async () => {
+    test('fails with status code 400 if id is invalid', async () => {
       const invalidId = '5a3d5da59070081a82a3445'
 
       await api
@@ -131,18 +132,25 @@ describe('when there is initially some notes saved', () => {
         .expect(400)
     })
 
+    test('fails with status code 404 if id is missing', async () => {
+      const missingId = '67e41aa5c7dac7fedfabf18b'
+
+      await api
+        .put(`/api/notes/${missingId}`)
+        .expect(404)
+    })
+
     test('fails with status code 400 if data invalid', async () => {
       const notesAtStart = await helper.notesInDb()
 
-      let noteToEdit = notesAtStart[0]
-      noteToEdit = {
-        important: false,
-        id: notesAtStart[0].id
+      const idNoteToEdit = notesAtStart[0].id
+      const editedNote = {
+        content: 666
       }
 
       const response = await api
-        .put(`/api/notes/${noteToEdit.id}`)
-        .send(noteToEdit)
+        .put(`/api/notes/${idNoteToEdit}`)
+        .send(editedNote)
         .expect(400)
         .expect('Content-Type', /application\/json/)
 

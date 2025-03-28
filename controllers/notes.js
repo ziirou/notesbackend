@@ -49,14 +49,19 @@ notesRouter.put('/:id', async (request, response) => {
 
   const note = await Note.findById(request.params.id)
   if (!note) {
-    response.status(404).end()
+    return response.status(404).end()
   }
 
   note.content = content
   note.important = setImportance(important)
 
-  const updatedNote = await note.save()
-  response.status(200).json(updatedNote)
+  const updatedNote = await Note
+    .findByIdAndUpdate(
+      request.params.id,
+      note,
+      { new: true, runValidators: true }
+    )
+  response.json(updatedNote)
 })
 
 module.exports = notesRouter
