@@ -6,7 +6,7 @@
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development node --watch index.js",
     "test": "cross-env NODE_ENV=test node --test",
-    "build:ui": "@powershell -Command \"if (Test-Path dist) { Remove-Item -Recurse -Force dist }\" && cd ../../part2 && npm run build && @powershell Copy-Item -Recurse dist ../part3/notesbackend",
+    "build:ui": "@powershell -Command \"if (Test-Path dist) { Remove-Item -Recurse -Force dist }\" && cd ../../part2/notesfrontend && npm run build && @powershell Copy-Item -Recurse dist ../../part3/notesbackend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
